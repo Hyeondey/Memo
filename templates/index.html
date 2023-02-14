@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Memo Application</title>
+  </head>
+  <body>
+    <h1>Memo Application</h1>
+    {% if memo %}
+      <form action="{{ url_for('update', memo_id=memo_id) }}" method="post">
+        <input type="text" name="memo" value="{{ memo }}">
+        <input type="submit" value="Update">
+      </form>
+      <a href="{{ url_for('delete', memo_id=memo_id) }}">Delete</a>
+      <a href="{{ url_for('index') }}">Back to all memos</a>
+    {% else %}
+      <form action="/create" method="post">
+        <input type="text" name="memo">
+        <input type="submit" value="Create">
+      </form>
+    {% endif %}
+    <ul>
+      {% for memo in memos %}
+        <li><a href="{{ url_for('show', memo_id=loop.index) }}">{{ memo }}</a></li>
+      {% endfor %}
+    </ul>
+  </body>
+</html>
