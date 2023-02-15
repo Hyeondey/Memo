@@ -1,27 +1,41 @@
-<!DOCTYPE html>
 <html>
   <head>
     <title>Memo Application</title>
   </head>
   <body>
-    <h1>Memo Application</h1>
-    {% if memo %}
-      <form action="{{ url_for('update', memo_id=memo_id) }}" method="post">
-        <input type="text" name="memo" value="{{ memo }}">
-        <input type="submit" value="Update">
-      </form>
-      <a href="{{ url_for('delete', memo_id=memo_id) }}">Delete</a>
-      <a href="{{ url_for('index') }}">Back to all memos</a>
+    {% if 'username' in session %}
+      Logged in as {{ session['username'] }} <a href="{{ url_for('logout') }}">(logout)</a>
+      <h1>Memo Application</h1>
+      {% if memo %}
+        <h2>{{ memo.content }}</h2>
+        <form action="{{ url_for('add_comment', memo_id=memo.id) }}" method="post">
+          <p>Comment: <input type="text" name="comment"></p>
+          <input type="submit" value="Submit">
+        </form>
+        <h3>Comments</h3>
+        <ul>
+          {% for comment in comments %}
+            <li>{{ comment.content }}</li>
+          {% endfor %}
+        </ul>
+        {% if memo.author_id == session['user_id'] %}
+          <a href="{{ url_for('delete', memo_id=memo.id) }}">Delete</a>
+        {% endif %}
+      {% else %}
+        <form action="{{ url_for('create') }}" method="post">
+          <p>Memo: <input type="text" name="memo"></p>
+          <input type="submit" value="Submit">
+        </form>
+        <h2>Memos</h2>
+        <ul>
+          {% for memo in memos %}
+            <li><a href="{{ url_for('show', memo_id=memo.id) }}">{{ memo.content }}</a></li>
+          {% endfor %}
+        </ul>
+      {% endif %}
     {% else %}
-      <form action="/create" method="post">
-        <input type="text" name="memo">
-        <input type="submit" value="Create">
-      </form>
+      <h1>Memo Application</h1>
+{      <a href="{{ url_for('signin') }}">signin</a> or <a href="{{ url_for('signup') }}">Signup</a>}
     {% endif %}
-    <ul>
-      {% for memo in memos %}
-        <li><a href="{{ url_for('show', memo_id=loop.index) }}">{{ memo }}</a></li>
-      {% endfor %}
-    </ul>
   </body>
 </html>
