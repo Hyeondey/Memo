@@ -1,0 +1,41 @@
+<html>
+  <head>
+    <title>Memo Application</title>
+  </head>
+  <body>
+    {% if 'username' in session %}
+      Logged in as {{ session['username'] }} <a href="{{ url_for('logout') }}">(logout)</a>
+      <h1>Memo Application</h1>
+      {% if memo %}
+        <h2>{{ memo.content }}</h2>
+        <form action="{{ url_for('add_comment', memo_id=memo.id) }}" method="post">
+          <p>Comment: <input type="text" name="comment"></p>
+          <input type="submit" value="Submit">
+        </form>
+        <h3>Comments</h3>
+        <ul>
+          {% for comment in comments %}
+            <li>{{ comment.content }}</li>
+          {% endfor %}
+        </ul>
+        {% if memo.author_id == session['user_id'] %}
+          <a href="{{ url_for('delete', memo_id=memo.id) }}">Delete</a>
+        {% endif %}
+      {% else %}
+        <form action="{{ url_for('create') }}" method="post">
+          <p>Memo: <input type="text" name="memo"></p>
+          <input type="submit" value="Submit">
+        </form>
+        <h2>Memos</h2>
+        <ul>
+          {% for memo in memos %}
+            <li><a href="{{ url_for('show', memo_id=memo.id) }}">{{ memo.content }}</a></li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% else %}
+      <h1>Memo Application</h1>
+      <a href="{{ url_for('login') }}">Login</a> or <a href="{{ url_for('signup') }}">Signup</a>
+    {% endif %}
+  </body>
+</html>

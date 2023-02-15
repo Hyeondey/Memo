@@ -1,0 +1,13 @@
+<html>
+  <head>
+    <title>Signup</title>
+  </head>
+  <body>
+    <h1>Signup</h1>
+    <form action="{{ url_for('signup') }}" method="post">
+      <p>Username: <input type="text" name="username"></p>
+      <p>Password: <input type="password" name="password"></p>
+      <input type="submit" value="Submit">
+    </form>
+  </body>
+</html>

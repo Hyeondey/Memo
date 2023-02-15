@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Create Memo</title>
+</head>
+<body>
+  {% if is_logged_in %}
+    <form method="post" action="{{ url_for('create') }}">
+      <label for="memo">Memo:</label><br>
+      <textarea id="memo" name="memo" rows="4" cols="50" required></textarea><br><br>
+      <button type="submit">Create</button>
+    </form>
+  {% else %}
+    <p>Please <a href="{{ url_for('signin') }}">Sign In</a> or <a href="{{ url_for('signup') }}">Sign Up</a> to create memos.</p>
+  {% endif %}
+</body>
+</html>
